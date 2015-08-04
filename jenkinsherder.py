@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-"""Submits jenkins steeplechase WebRTC test results to treeherder"""
+"""Submits [fake] jenkins steeplechase WebRTC test results to treeherder"""
 
 from ConfigParser import ConfigParser
 import glob
@@ -17,15 +17,13 @@ import argparse
 import re
 import sys
 import subprocess
-import mozlog
+from mozlog import commandline
 
 #import sclogparse
 import treeherder_config
 from s3 import S3Bucket
-from treeherding import (TestJob, Tier2Treeherder, TreeherderOptions,
+from treeherding import (TestJob, TreeherderSubmission, TreeherderOptions,
                          timestamp_now, get_platform_attributes)
-logger = mozlog.getLogger(__file__)
-logger.setLevel(mozlog.DEBUG)
 
 dummy_config = {
     # simulate jenkins environment variable BUILD_TAG
@@ -52,7 +50,8 @@ dummy_config = {
                             'platform': 'mac x86_64',
                             'architecture': 'x86_64',
                             'package': 'firefox-latest-aurora.en-US.mac.zip',
-                            'revision': '7333a8d7b494',
+                            # Replace this with a recent revision
+                            'revision': 'c4205c07ec41',
                             'build_id': '20150512071246'
                             },
                           'machine':
@@ -84,7 +83,8 @@ dummy_config = {
                         'platform': 'win x86_64',
                         'architecture': 'x86_64',
                         'package': 'firefox-latest-nightly.en-US.win64.zip',
-                        'revision': '3c26bef95d54',
+                        # Replace this with a recent revision
+                        'revision': '5cf4d2f7f2f2',
                         'build_id': '20150512071246'
                         },
                       'machine':
@@ -384,7 +384,7 @@ def main(argv):
     config = get_config(argv)
     th_options = get_treeherder_options(config['treeherder_url'],
                                         config['treeherder_credentials_path'])
-    treeherder = Tier2Treeherder(logger, th_options,
+    treeherder = TreeherderSubmission(logger, th_options,
                                  get_s3_bucket(config['s3_credentials_path']))
 
     # Each job represents one Firefox instance in the WebRTC pair
@@ -463,6 +463,9 @@ def main(argv):
 
 
 if __name__ == '__main__':
+    logger = commandline.setup_logging("example-submission", None,
+                                       {"mach": sys.stdout},
+                                       {"level": "debug"})
     result_string = main(sys.argv[1:])
     if result_string == 'busted':
         raise Exception('Something went wrong in the test harness.')

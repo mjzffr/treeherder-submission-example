@@ -16,3 +16,4 @@ Treeherder resources:
 They are also in use here:
 * https://github.com/sydvicious/mozplatformqa-jenkins
 * https://github.com/mjzffr/firefox-media-tests/tree/pf-jenkins
+* https://github.com/mozilla/mozmill-ci/tree/0c53446fe0a24794303339b688a67ccf3a91d8db
