@@ -19,7 +19,7 @@ import json
 
 import mozinfo
 import mozversion
-from thclient import TreeherderAuth, TreeherderClient, TreeherderJobCollection
+from thclient import TreeherderClient, TreeherderJobCollection
 
 from s3 import S3Error
 
@@ -302,13 +302,10 @@ class TreeherderSubmission(object):
         self.logger.debug(type(self).__name__ + '.post_request - '
                           'job_collection =\n%s' %
                           pretty(job_collection.get_collection_data()))
-
-        auth = TreeherderAuth(self.credentials[project]['consumer_key'],
-                              self.credentials[project]['consumer_secret'],
-                              project)
         client = TreeherderClient(protocol=self.protocol,
                                   host=self.server,
-                                  auth=auth)
+                                  client_id=self.credentials['client_id'],
+                                  secret=self.credentials['secret'])
         for attempt in range(1, self.retries + 1):
             try:
                 client.post_collection(project, job_collection)
