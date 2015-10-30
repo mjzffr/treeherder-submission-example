@@ -51,7 +51,7 @@ dummy_config = {
                             'architecture': 'x86_64',
                             'package': 'firefox-latest-aurora.en-US.mac.zip',
                             # Replace this with a recent revision
-                            'revision': 'c4205c07ec41',
+                            'revision': 'd0b283bc162b',
                             'build_id': '20150512071246'
                             },
                           'machine':
@@ -84,7 +84,7 @@ dummy_config = {
                         'architecture': 'x86_64',
                         'package': 'firefox-latest-nightly.en-US.win64.zip',
                         # Replace this with a recent revision
-                        'revision': '5cf4d2f7f2f2',
+                        'revision': 'c2534acb4859',
                         'build_id': '20150512071246'
                         },
                       'machine':
